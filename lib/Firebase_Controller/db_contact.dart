@@ -22,4 +22,8 @@ class dbContact{
       print(e.toString());
     });
   }
+
+  static Future<void> addContact(userData)async{
+    Firestore.instance.collection("listContact").add(userData);
+  }
 }

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skuy_messaging/Contact/addContact.dart';
+import 'package:skuy_messaging/Contact/contact_list.dart';
 
 class ContactScreen extends StatefulWidget{
   ContactScreenState createState()=> ContactScreenState();
@@ -26,9 +27,7 @@ class ContactScreenState extends State<ContactScreen>{
           )
         ],
       ),
-      body: Center(
-        child: Text("sudah sampai dicontact"),
-      ),
+      body: ContactList(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         tooltip: "new Contact",
