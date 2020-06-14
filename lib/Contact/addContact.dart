@@ -13,7 +13,7 @@ class addContact extends StatefulWidget{
 
 class addContactState extends State<addContact>{
   FirebaseUser user;
-  String currentUser_email;
+  String currentUser_uid;
   TextEditingController search = new TextEditingController();
   QuerySnapshot snapshot;
   QuerySnapshot currentUser;
@@ -27,6 +27,7 @@ class addContactState extends State<addContact>{
             email: snapshot.documents[index].data["email"],
             username: snapshot.documents[index].data["username"],
             uid: snapshot.documents[index].data["uid"],
+            currentUID: currentUser_uid,
           );
         }
     ) : Container();
@@ -42,7 +43,7 @@ class addContactState extends State<addContact>{
   Future<void> getCurrentUser()async{
     user = (await Auth_Controller.authentication.currentUser());
     setState(() {
-      currentUser_email = user.email;
+      currentUser_uid = user.uid;
 
     });
   }
