@@ -12,6 +12,7 @@ class SignUpState extends State<SignUp>{
   final _formKey = GlobalKey<FormState>();
   TextEditingController email = new TextEditingController();
   TextEditingController pass = new TextEditingController();
+  TextEditingController name = new TextEditingController();
 
   TextFormField getForm(String label){
     if(label=="Email"){
@@ -33,13 +34,20 @@ class SignUpState extends State<SignUp>{
         validator: (input)=> !validator.isLength(input,6)? "Minimal panjang 6":null,
         controller: pass,
       );
+    }else if(label=="Username"){
+        return TextFormField(
+            decoration: InputDecoration(
+            labelText: label,
+            icon: Icon(Icons.account_circle),
+        ),
+            controller: name,
+        );
     }
-
   }
 
   void signUp() async {
     if (_formKey.currentState.validate()) {
-      await Auth_Controller.signUpEmail(email.text, pass.text);
+      await Auth_Controller.signUpEmail(email.text, pass.text, name.text);
       Navigator.of(context)
           .pushNamedAndRemoveUntil('/signIn', (Route<dynamic> route) => false);
     }
@@ -62,6 +70,7 @@ class SignUpState extends State<SignUp>{
                       "Sign Up",
                       style: TextStyle(fontSize: 30),
                     ),
+                    getForm("Username"),
                     getForm("Email"),
                     getForm("password"),
                     new Row(
