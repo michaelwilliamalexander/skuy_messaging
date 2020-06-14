@@ -1,17 +1,36 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
 
 class ContactList extends StatefulWidget{
   ContactListState createState()=> ContactListState();
 }
 
 class ContactListState extends State<ContactList>{
+  FirebaseUser user;
+  String uid;
+
+  @override
+  void initState(){
+    // TODO: implement initState
+    getCurrentUser();
+    super.initState();
+  }
+
+  Future<void> getCurrentUser()async{
+    user = (await Auth_Controller.authentication.currentUser());
+    setState(() {
+      uid = user.uid;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection("listContact").snapshots(),
+      stream: Firestore.instance.collection("listContact").where("user_uid",isEqualTo: uid ).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
         Widget widget;
         if(snapshot.hasData){
