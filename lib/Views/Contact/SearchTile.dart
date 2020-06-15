@@ -15,7 +15,7 @@ class SearchTile extends StatelessWidget{
       "uid":uid,
       "user_uid":currentUID,
     };
-    dbContact.addContact(userMap);
+    DbContact.addContact(userMap);
   }
 
   @override
@@ -34,7 +34,10 @@ class SearchTile extends StatelessWidget{
             ),
             Spacer(),
             GestureDetector(
-              onTap: addContact,
+              onTap: (){
+                addContact();
+                Navigator.pop(context);
+              },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12,vertical: 8),
                 decoration: BoxDecoration(

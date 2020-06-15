@@ -1,9 +1,12 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
-import 'package:skuy_messaging/SignIn_n_SignUp/SignUp.dart';
+import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
+import 'package:skuy_messaging/Views/UserSign/SignUp.dart';
+import 'package:skuy_messaging/helper/helperfunctions.dart';
 import 'package:validators/validators.dart' as validator;
 
 class SignIn extends StatefulWidget{
@@ -45,28 +48,25 @@ class SignInState extends State<SignIn>{
   @override
   void initState() {
     super.initState();
-    _cekLogin();
+
   }
 
   void emailLogin() async {
     if (_formKey.currentState.validate()) {
       if(await Auth_Controller.emailSignIn(email.text, pass.text)){
-        pref = await SharedPreferences.getInstance();
-        pref.setBool("isLogin", true);
+        await HelperFunctions.saveUserLoggedIn(true);
+        await HelperFunctions.saveUserEmail(email.text);
+        QuerySnapshot data = await DbContact.searchEmail(email.text);
+        await HelperFunctions
+            .saveUsername(data.documents[0].data["username"]);
+        print(data.documents[0].data["username"]);
         Navigator.of(context)
             .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+        print("berhasil login");
       }else{
         email.clear();
         pass.clear();
       }
-    }
-  }
-
-  Future _cekLogin() async {
-    pref = await SharedPreferences.getInstance();
-    if (pref.getBool("isLogin")) {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
     }
   }
 
@@ -107,7 +107,7 @@ class SignInState extends State<SignIn>{
                       children: <Widget>[
                         RaisedButton(
                           onPressed: ()=>{Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUp()))},
-                          child: Text("Dont Have a Account",style: TextStyle(color: Colors.lime),),
+                          child: Text("Dont Have an Account?",style: TextStyle(color: Colors.lime),),
                           color: Colors.white,
                           highlightColor: Colors.white,
                           shape: RoundedRectangleBorder(

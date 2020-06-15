@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:skuy_messaging/Contact/SearchTile.dart';
+import 'SearchTile.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
 
@@ -49,7 +49,7 @@ class addContactState extends State<addContact>{
   }
 
   initiateSearch(){
-    dbContact.searchUserName(search.text).then((value){
+    DbContact.searchUserName(search.text).then((value){
       setState(() {
         snapshot = value;
       });

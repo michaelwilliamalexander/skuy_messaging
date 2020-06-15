@@ -28,7 +28,7 @@ class Auth_Controller{
 
     try {
       await user.sendEmailVerification();
-      dbContact.addUserInfo(userMap);
+      DbContact.addUserInfo(userMap);
     } catch (e) {
       print("An error occured while trying to send email       verification");
       print(e.message);

@@ -3,9 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skuy_messaging/Contact/contact_screen.dart';
+import 'package:skuy_messaging/Views/Contact/contact_screen.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
-import 'package:skuy_messaging/Home/HomeScreen.dart';
+import 'package:skuy_messaging/Views/Home/HomeScreen.dart';
+import 'package:skuy_messaging/helper/helperfunctions.dart';
 
 class Home extends StatefulWidget{
   HomeState createState()=> HomeState();
@@ -17,6 +18,7 @@ class HomeState extends State<Home>{
   String nama="as";
   FirebaseUser user;
 
+
   @override
   void initState(){
     // TODO: implement initState
@@ -26,8 +28,7 @@ class HomeState extends State<Home>{
 
   Future<void> SignOut()async{
     await Auth_Controller.logOut();
-    pref = await SharedPreferences.getInstance();
-    pref.setBool("isLogin", false);
+    await HelperFunctions.saveUserLoggedIn(false);
     Navigator.of(context).pushNamedAndRemoveUntil('/signIn',(Route<dynamic>route)=>false);
   }
 
@@ -66,7 +67,6 @@ class HomeState extends State<Home>{
               leading: Icon(FontAwesomeIcons.signOutAlt),
               onTap: SignOut,
             ),
-
           ],
         ),
       ),
@@ -75,3 +75,5 @@ class HomeState extends State<Home>{
   }
 
 }
+
+

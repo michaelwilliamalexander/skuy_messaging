@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:skuy_messaging/Contact/addContact.dart';
-import 'package:skuy_messaging/Contact/contact_list.dart';
+import 'package:skuy_messaging/Views/Contact/addContact.dart';
+import 'package:skuy_messaging/Views/Contact/contact_list.dart';
 
 class ContactScreen extends StatefulWidget{
   ContactScreenState createState()=> ContactScreenState();
