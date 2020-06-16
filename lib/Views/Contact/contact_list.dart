@@ -52,7 +52,7 @@ class ContactListState extends State<ContactList>{
     //Navigator.popAndPushNamed(context, '/conversation', arguments: chatRoomId);
     Navigator.push(context, MaterialPageRoute(
       builder: (context) => ChatRoom(
-        chatRoomId
+        chatRoomId,username
       )
     ));
   }

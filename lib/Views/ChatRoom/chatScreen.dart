@@ -8,7 +8,8 @@ import 'package:skuy_messaging/helper/constants.dart';
 
 class ChatRoom extends StatefulWidget{
   String chatRoomId;
-  ChatRoom(this.chatRoomId);
+  String username;
+  ChatRoom(this.chatRoomId,this.username);
 
   @override
   State<StatefulWidget> createState()=> _ChatRoomState();
@@ -34,8 +35,6 @@ class _ChatRoomState extends State<ChatRoom>{
       },
     );
   }
-
-
 
   Future pickPictureFromGallery() async{
     var galeryFile = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -88,7 +87,6 @@ class _ChatRoomState extends State<ChatRoom>{
       });
     });
     super.initState();
-  
   }
 
   Future<String> createBoxDialog(BuildContext context) {
@@ -148,7 +146,14 @@ class _ChatRoomState extends State<ChatRoom>{
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("SKUY"),
+        title: Text(widget.username),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Colors.orange,Colors.red])),
+        ),
       ),
       body: Container(
         child: Stack(

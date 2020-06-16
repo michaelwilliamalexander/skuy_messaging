@@ -15,6 +15,13 @@ class ContactScreenState extends State<ContactScreen>{
     return Scaffold(
       appBar: AppBar(
         title: Text("Contact"),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Colors.orange,Colors.red])),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -30,6 +37,7 @@ class ContactScreenState extends State<ContactScreen>{
       body: ContactList(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        backgroundColor: Colors.orange,
         tooltip: "new Contact",
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(

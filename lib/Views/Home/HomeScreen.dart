@@ -64,7 +64,6 @@ class HomeScreenState extends State<HomeScreen>{
       body: conversationList(),
     );
   }
-
 }
 class ConversationTile extends StatelessWidget{
   final String username;
@@ -78,7 +77,7 @@ class ConversationTile extends StatelessWidget{
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ChatRoom(conversationId)
+          builder: (context) => ChatRoom(conversationId,username)
         ));
       },
       child: Container(

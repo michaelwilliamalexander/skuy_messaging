@@ -13,7 +13,6 @@ class MessageTile extends StatefulWidget{
 
 class MessageTileState extends State<MessageTile>{
   String image;
-
   @override
   void initState(){
     // TODO: implement initState
@@ -28,11 +27,9 @@ class MessageTileState extends State<MessageTile>{
     });
   }
 
-
-
   Widget getValue(bool value, String message){
     if(value){
-      return image!=null?Image.network(image,width: 300,height: 300,):Text(widget.message);
+      return image!=null? Image.network(image,width: 300,height: 300,):Text("");
     }else{
       return Text(
         message,
@@ -57,11 +54,11 @@ class MessageTileState extends State<MessageTile>{
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 colors: widget.isSendByMe ? [
-                  const Color(0xff007Ef4),
-                  const Color(0xff2A75BC)
+                  Colors.red,
+                  Colors.orange
                 ] : [
-                  const Color(0xff007EfF),
-                  const Color(0xff2A75BC)
+                  Colors.red,
+                  Colors.orange
                 ]
             ),
             borderRadius: widget.isSendByMe ?

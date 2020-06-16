@@ -62,6 +62,13 @@ class addContactState extends State<addContact>{
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Contact"),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Colors.orange,Colors.red])),
+        ),
       ),
       body: Container(
         child: Column(

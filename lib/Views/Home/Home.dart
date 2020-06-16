@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skuy_messaging/Views/Contact/contact_screen.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
 import 'package:skuy_messaging/Views/Home/HomeScreen.dart';
+import 'package:skuy_messaging/helper/constants.dart';
 import 'package:skuy_messaging/helper/helperfunctions.dart';
 
 class Home extends StatefulWidget{
@@ -33,6 +34,7 @@ class HomeState extends State<Home>{
   }
 
   Future<void> getCurrentUser()async{
+    Constants.myName = await HelperFunctions.getUsername();
     user = (await Auth_Controller.authentication.currentUser());
     setState(() {
       email = user.email;
@@ -44,18 +46,35 @@ class HomeState extends State<Home>{
         builder: (context) => ContactScreen()
     ),);
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text("Skuy"),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Colors.orange,Colors.red])),
+        ),
       ),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.orange,Colors.red])),
               accountEmail: Text(email),
+              accountName: Text(Constants.myName),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.blue,
+              ),
             ),
             ListTile(
               title: Text("Contact"),
@@ -71,6 +90,14 @@ class HomeState extends State<Home>{
         ),
       ),
       body: HomeScreen(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        tooltip: "new Conversation",
+        backgroundColor: Colors.orange,
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> ContactScreen()));
+        },
+      ),
     );
   }
 
