@@ -59,7 +59,7 @@ class DbContact{
     return Firestore.instance.collection("Conversation")
         .document(chatRoomId)
         .collection("chats")
-        .orderBy("time", descending: false)
+        .orderBy("time", descending: true)
         .snapshots();
   }
 
