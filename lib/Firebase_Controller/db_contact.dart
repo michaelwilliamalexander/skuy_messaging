@@ -1,5 +1,8 @@
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class DbContact{
 
@@ -32,6 +35,17 @@ class DbContact{
         .document(conversationId).setData(conversationMap).catchError((e){
           print(e.toString());
     });
+  }
+
+  static uploadImage(String path, File file)async{
+    StorageReference sr = await FirebaseStorage.instance.ref().child(path);
+    await sr.putFile(file);
+  }
+
+  static Future<String>downloadImage(String path)async{
+    StorageReference sr = await FirebaseStorage.instance.ref().child(path);
+    String download  = await sr.getDownloadURL();
+    return download;
   }
 
   static addConversationMessages(String chatRoomId, messageMap)async{

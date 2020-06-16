@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
+import 'package:skuy_messaging/Views/ChatRoom/MessageTIle.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 
 class ChatRoom extends StatefulWidget{
@@ -39,9 +41,10 @@ class _ChatRoomState extends State<ChatRoom>{
 
   Future pickPictureFromGallery() async{
     var galeryFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    String tempt = "Skuy"+"${DateTime.now().millisecondsSinceEpoch}";
+    await DbContact.uploadImage(tempt, galeryFile);
     setState(() {
-      images = base64Encode(galeryFile.readAsBytesSync());
-      sendImage();
+      images = tempt;
     });
   }
 
@@ -49,7 +52,6 @@ class _ChatRoomState extends State<ChatRoom>{
     var galeryFile = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       images = base64Encode(galeryFile.readAsBytesSync());
-      sendImage();
     });
   }
 
@@ -101,8 +103,9 @@ class _ChatRoomState extends State<ChatRoom>{
                 SizedBox(
                   width: double.infinity,
                   child: new RaisedButton(
-                    onPressed: (){
-                      pickPictureUsingPhoto();
+                    onPressed: ()async{
+                      await pickPictureUsingPhoto();
+                      sendImage();
                       Navigator.pop(context);
                     },
                     color: Colors.white,
@@ -118,8 +121,9 @@ class _ChatRoomState extends State<ChatRoom>{
                 SizedBox(
                   width: double.infinity,
                   child: new RaisedButton(
-                      onPressed: (){
-                        pickPictureFromGallery();
+                      onPressed: ()async{
+                        await pickPictureFromGallery();
+                        sendImage();
                         Navigator.pop(context);
                       },
                     color: Colors.white,
@@ -216,61 +220,3 @@ class _ChatRoomState extends State<ChatRoom>{
     );
   }
 }
-
-class MessageTile extends StatelessWidget{
-  final String message;
-  final bool isPicture;
-  final bool isSendByMe;
-
-  Widget getValue(bool value, String message){
-    if(value){
-      return Image.memory(base64Decode(message));
-    }else{
-      return Text(
-        message,
-        style: TextStyle(
-            color: Colors.black,
-            fontSize: 15
-        ),
-      );
-    }
-  }
-
-  MessageTile(this.message,this.isPicture, this.isSendByMe);
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      padding: EdgeInsets.only(left: isSendByMe ? 20 : 24 , right: isSendByMe ? 24 : 20),
-      margin: EdgeInsets.symmetric(vertical: 6),
-      width: MediaQuery.of(context).size.width,
-      alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: isSendByMe ? [
-              const Color(0xff007Ef4),
-              const Color(0xff2A75BC)
-            ] : [
-              const Color(0xff007EfF),
-              const Color(0xff2A75BC)
-            ]
-          ),
-          borderRadius: isSendByMe ?
-              BorderRadius.only(
-                topLeft: Radius.circular(25),
-                topRight: Radius.circular(25),
-                bottomLeft: Radius.circular(25)
-              ) :
-              BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
-                  bottomRight: Radius.circular(25)
-              )
-        ),
-        child: getValue(isPicture, message),
-      ),
-    );
-  }}
