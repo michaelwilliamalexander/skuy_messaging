@@ -64,6 +64,7 @@ class ContactListState extends State<ContactList>{
     else
       return "$a\_$b";
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

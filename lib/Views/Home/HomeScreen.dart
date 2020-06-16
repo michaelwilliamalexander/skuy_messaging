@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:skuy_messaging/Views/ChatRoom/chatScreen.dart';
 import 'package:skuy_messaging/helper/constants.dart';
@@ -19,12 +20,20 @@ class HomeScreenState extends State<HomeScreen>{
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
-            return ConversationTile(
-                snapshot.data.documents[index].data["chatroomId"]
-                    .toString()
-                    .replaceAll("_", "")
-                    .replaceAll(Constants.myName, ""),
-                snapshot.data.documents[index].data["chatroomId"]
+            return Container(
+              child: Dismissible(
+                key: UniqueKey(),
+                background: Container(color: Colors.red),
+                onDismissed: (direction) async {
+                },
+                child: ConversationTile(
+                    snapshot.data.documents[index].data["chatroomId"]
+                        .toString()
+                        .replaceAll("_", "")
+                        .replaceAll(Constants.myName, ""),
+                    snapshot.data.documents[index].data["chatroomId"]
+                ),
+              ),
             );
           },
         ): Container();
