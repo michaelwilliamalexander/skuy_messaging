@@ -7,6 +7,7 @@ class MessageTile extends StatefulWidget{
   final String message;
   final bool isPicture;
   final bool isSendByMe;
+
   MessageTile(this.message,this.isPicture, this.isSendByMe);
   MessageTileState createState()=> MessageTileState();
 }
@@ -44,7 +45,7 @@ class MessageTileState extends State<MessageTile>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
+    return widget.isPicture ? Container(
       padding: EdgeInsets.only(left: widget.isSendByMe ? 20 : 24 , right: widget.isSendByMe ? 24 : 20),
       margin: EdgeInsets.symmetric(vertical: 6),
       width: MediaQuery.of(context).size.width,
@@ -73,8 +74,10 @@ class MessageTileState extends State<MessageTile>{
                 bottomRight: Radius.circular(25)
             )
         ),
-        child: getValue(widget.isPicture, widget.message),
       ),
+    ) : Container(
+      margin: EdgeInsets.only(bottom: widget.isSendByMe ? 20.0 : 10.0, right: 10.0),
+      child: getValue(widget.isPicture, widget.message),
     );
   }
 

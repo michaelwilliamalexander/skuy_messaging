@@ -26,10 +26,11 @@ class _ChatRoomState extends State<ChatRoom>{
       builder: (context, snapshot){
         return snapshot.hasData ? ListView.builder(
             itemCount: snapshot.data.documents.length,
+            reverse: true,
             itemBuilder: (context, index){
               return MessageTile(snapshot.data.documents[index].data["message"],
                   snapshot.data.documents[index].data["isphoto"],
-                snapshot.data.documents[index].data["sendBy"] == Constants.myName
+                  snapshot.data.documents[index].data["sendBy"] == Constants.myName
               );
             }) : Container();
       },
@@ -59,7 +60,7 @@ class _ChatRoomState extends State<ChatRoom>{
       Map<String, dynamic> messageMap = {
         "message" : messageController.text,
         "sendBy" : Constants.myName,
-        "isphoto":false,
+        "isphoto": false,
         "time" : DateTime.now().millisecondsSinceEpoch
       };
       DbContact.addConversationMessages(widget.chatRoomId, messageMap);
@@ -71,7 +72,7 @@ class _ChatRoomState extends State<ChatRoom>{
       Map<String, dynamic> messageMap = {
         "message" : images,
         "sendBy" : Constants.myName,
-        "isphoto":true,
+        "isphoto": true,
         "time" : DateTime.now().millisecondsSinceEpoch
       };
       DbContact.addConversationMessages(widget.chatRoomId, messageMap);
@@ -173,6 +174,7 @@ class _ChatRoomState extends State<ChatRoom>{
                       child: Container(
                         height: 40,
                         width: 40,
+                        padding: EdgeInsets.only(right: 10),
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
                                 colors: [
@@ -189,6 +191,7 @@ class _ChatRoomState extends State<ChatRoom>{
                       child: TextField(
                         controller: messageController,
                         decoration: InputDecoration(
+                          fillColor: Colors.grey,
                           hintText: "Message. . .",
                           hintStyle: TextStyle(color: Colors.black54),
                           border: InputBorder.none,
