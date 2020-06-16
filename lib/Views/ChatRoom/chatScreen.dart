@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -50,8 +48,10 @@ class _ChatRoomState extends State<ChatRoom>{
 
   Future pickPictureUsingPhoto() async{
     var galeryFile = await ImagePicker.pickImage(source: ImageSource.camera);
+    String tempt = "Skuy"+"${DateTime.now().millisecondsSinceEpoch}";
+    await DbContact.uploadImage(tempt, galeryFile);
     setState(() {
-      images = base64Encode(galeryFile.readAsBytesSync());
+      images = tempt;
     });
   }
 
