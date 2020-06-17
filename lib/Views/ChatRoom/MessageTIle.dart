@@ -36,7 +36,6 @@ class MessageTileState extends State<MessageTile>{
 
         },
         child: Image.network(image,
-
           width: 300,
           height: 300,
           fit: BoxFit.cover,

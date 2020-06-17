@@ -98,7 +98,12 @@ class _ChatRoomState extends State<ChatRoom>{
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Photos"),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Photo"),
+              ],
+            ),
             content: Wrap(
               children: <Widget>[
                 SizedBox(
@@ -162,7 +167,10 @@ class _ChatRoomState extends State<ChatRoom>{
         child: Stack(
 
           children: [
-            MessageList(),
+            Container(
+              padding: EdgeInsets.only(bottom: 100),
+              child: MessageList(),
+            ),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
