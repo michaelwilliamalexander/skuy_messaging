@@ -77,7 +77,7 @@ class HomeState extends State<Home>{
   }
 
   void configLocalNotification() {
-    var initializationSettingsAndroid = new AndroidInitializationSettings("@mipmap/ic_launcher");
+    var initializationSettingsAndroid = new AndroidInitializationSettings("assets/image/LOGO.png");
     var initializationSettingsIOS = new IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(initializationSettingsAndroid, initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
