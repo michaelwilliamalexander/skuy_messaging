@@ -13,8 +13,19 @@ class DbContact{
         .getDocuments();
   }
 
-  static updatePhoto(String email,userData)async{
-    Firestore.instance.collection('users').document(email).updateData(userData);
+  static searchUid(String uid) async{
+    return await Firestore.instance
+        .collection("users")
+        .where('uid', isEqualTo: uid)
+        .getDocuments();
+  }
+
+  static updateUsername(String email, String username){
+    Firestore.instance.collection('users').document(email).updateData({"username":username});
+  }
+
+  static updatePhoto(String email,String photo)async{
+    Firestore.instance.collection('users').document(email).updateData({"photo":photo});
   }
 
   static searchEmail(String email) async{

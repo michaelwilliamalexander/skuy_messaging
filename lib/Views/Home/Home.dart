@@ -14,6 +14,7 @@ import 'package:skuy_messaging/Views/Contact/contact_screen.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
 import 'package:skuy_messaging/Views/Home/HomeScreen.dart';
 import 'package:skuy_messaging/Views/Setting/Setting.dart';
+import 'package:skuy_messaging/Views/model/user.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 import 'package:skuy_messaging/helper/helperfunctions.dart';
 
@@ -105,11 +106,18 @@ class HomeState extends State<Home>{
     Constants.myName = await HelperFunctions.getUsername();
     user = (await Auth_Controller.authentication.currentUser());
     String namas = await HelperFunctions.getUsername();
-    String tempt = await DbContact.downloadImage("Skuy1592308940792");
+    DbContact.searchUid(user.uid).then((value)async{
+      for(int i=0;i<value.documents.length;i++){
+        String tempt = await DbContact.downloadImage(value.documents[i].data["photo"]);
+        setState(() {
+          User.photo = tempt;
+        });
+      }
+    });
     setState(() {
-      email = user.email;
-      image = tempt;
-      nama = namas;
+      User.email = user.email;
+      User.username = namas;
+      User.uid = user.uid;
     });
   }
 
@@ -144,9 +152,9 @@ class HomeState extends State<Home>{
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                   colors: [Colors.orange,Colors.red])),
-              accountEmail: Text(email),
+              accountEmail: Text(User.email),
               accountName: Text(Constants.myName),
-              currentAccountPicture: image!=null? CircleAvatar(backgroundImage: NetworkImage(image),)
+              currentAccountPicture: User.photo!=null? CircleAvatar(backgroundImage: NetworkImage(User.photo),)
                   :CircleAvatar(backgroundColor: Colors.blueGrey,)
             ),
             ListTile(

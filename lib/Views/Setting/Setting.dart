@@ -1,50 +1,44 @@
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
 import 'package:skuy_messaging/Views/ChatRoom/DetailPhoto.dart';
+import 'package:skuy_messaging/Views/model/user.dart';
 import 'package:skuy_messaging/helper/constants.dart';
-import 'package:skuy_messaging/helper/helperfunctions.dart';
 
 class Setting extends StatefulWidget{
   SettingState createState()=> SettingState();
 }
 
 class SettingState extends State<Setting>{
-  String image;
-  String email;
-  String nama = "Aku";
-  bool edit = false;
-  @override
-  void initState(){
-    getImage();
-    super.initState();
-  }
 
   Future pickPictureFromGallery() async{
     var galeryFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    String tempt = "Skuy"+"${DateTime.now().millisecondsSinceEpoch}";
+    String tempt = "Profile-"+User.uid;
+    await DbContact.updatePhoto(User.email,tempt);
     await DbContact.uploadImage(tempt, galeryFile);
+    String count = await DbContact.downloadImage(tempt);
     setState(() {
-      image = tempt;
+      User.photo = count;
     });
   }
 
   Future pickPictureUsingPhoto() async{
     var galeryFile = await ImagePicker.pickImage(source: ImageSource.camera);
-    String tempt = "Skuy"+"${DateTime.now().millisecondsSinceEpoch}";
+    String tempt = "Profile-"+User.uid;
+    await DbContact.updatePhoto(User.email,tempt);
     await DbContact.uploadImage(tempt, galeryFile);
+    String count = await DbContact.downloadImage(tempt);
     setState(() {
-      image = tempt;
+      User.photo = count;
     });
   }
 
-  Future<String> createBoxDialog(BuildContext context) {
-    TextEditingController newCategory = TextEditingController();
+  Future<String> createBoxDialog() {
     return showDialog(
         context: context,
         builder: (context) {
@@ -97,19 +91,12 @@ class SettingState extends State<Setting>{
         });
   }
 
-  void getImage()async{
-    String tempt = await DbContact.downloadImage("Skuy1592308940792");
-    FirebaseUser user = (await Auth_Controller.authentication.currentUser());
-    setState(() {
-      image = tempt;
-      email = user.email;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text("Settings"),
         flexibleSpace: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -118,67 +105,119 @@ class SettingState extends State<Setting>{
                   colors: [Colors.orange,Colors.red])),
         ),
       ),
-      body: Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: <Widget>[
-           Container(
-             decoration: BoxDecoration(
-               color: Colors.black54,
-               borderRadius: BorderRadius.all(
-                 Radius.circular(10.0)
+      body: Scrollbar(
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(20),
+          child: ListView(
+            children: <Widget>[
+             Container(
+               decoration: BoxDecoration(
+                 color: Colors.black54,
+                 borderRadius: BorderRadius.all(
+                   Radius.circular(10.0)
+                 ),
+               ),
+               padding: EdgeInsets.all(20),
+               child: Row(
+                 children: <Widget>[
+                   Container(
+                     child: User.photo!=null? CircleAvatar(backgroundImage: NetworkImage(User.photo),radius: 50,child: GestureDetector(
+                       onTap: (){
+                         Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPhoto(photo: User.photo,)));
+                       },
+                     ),)
+                         :CircleAvatar(backgroundColor: Colors.blueGrey,radius: 50,),
+                   ),
+                   Expanded(
+                     child: Container(
+                       padding: EdgeInsets.only(left: 30),
+                       child: Column(
+                         children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child:Text(Constants.myName,style: TextStyle(
+                                fontSize: 25
+                            ),),
+                          ),Align(
+                             alignment: Alignment.centerLeft,
+                             child: User.email!=null?Text(User.email,style: TextStyle(
+                                 fontSize: 15
+                             ),):Text(""),
+                           ),
+                           Container(
+                               padding: EdgeInsets.all(10),
+                               child: Row(
+                                 mainAxisAlignment: MainAxisAlignment.end,
+                                 children: <Widget>[
+                                   GestureDetector(
+                                     onTap: (){
+                                       createBoxDialog();
+                                     },
+                                       child: CircleAvatar(child: Icon(FontAwesomeIcons.camera),backgroundColor: Colors.orange,)),
+                                 ],
+                               )
+                           )
+                         ],
+                       ) ,
+                     ),
+                   ),
+                 ],
                ),
              ),
-             padding: EdgeInsets.all(20),
-             child: Row(
-               children: <Widget>[
-                 Container(
-                   child: image!=null? CircleAvatar(backgroundImage: NetworkImage(image),radius: 50,child: GestureDetector(
-                     onTap: (){
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPhoto(photo: image,)));
-                     },
-                   ),)
-                       :CircleAvatar(backgroundColor: Colors.blueGrey,radius: 50,child: GestureDetector(
-                     onTap: (){
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPhoto(photo: image,)));
-                     },
-                   ),),
-                 ),
-                 Expanded(
-                   child: Container(
-                     padding: EdgeInsets.only(left: 30),
-                     child: Column(
-                       children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child:Text(Constants.myName,style: TextStyle(
-                              fontSize: 25
-                          ),),
-                        ),Align(
-                           alignment: Alignment.centerLeft,
-                           child: email!=null?Text(email,style: TextStyle(
-                               fontSize: 15
-                           ),):Text(""),
-                         ),
-                         Container(
-                             padding: EdgeInsets.all(10),
-                             child: Row(
-                               mainAxisAlignment: MainAxisAlignment.end,
-                               children: <Widget>[
-                                 CircleAvatar(child: Icon(FontAwesomeIcons.camera),backgroundColor: Colors.orange,),
-                               ],
-                             )
-                         )
-                       ],
-                     ) ,
-                   ),
-                 ),
-               ],
-             ),
-           ),
-
-          ],
+              Container(height: 20,),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(10.0)
+                  ),
+                ),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text("Account")
+                      ],
+                    ),
+                    Container(height: 10,),
+                    ListTile(
+                      title: Text("Change Username"),
+                      leading: Icon(Icons.account_circle),
+                      subtitle: Container(
+                        decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(color: Colors.grey))
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: (){
+                        Auth_Controller.changePass(User.email);
+                        Fluttertoast.showToast(
+                            msg: "Please Check Your Email",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      },
+                      title: Text("Change Password"),
+                      leading: Icon(FontAwesomeIcons.lock),
+                      subtitle: Container(
+                        decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(color: Colors.grey))
+                        ),
+                      ),
+                    ),
+                    
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
