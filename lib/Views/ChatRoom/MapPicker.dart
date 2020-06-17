@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
+import 'package:skuy_messaging/helper/constants.dart';
 
 class MapPicker extends StatefulWidget{
+  String chatRoomId;
+  String username;
   @override
   State<StatefulWidget> createState()=> _MapPickerState();
 }
@@ -14,6 +19,18 @@ class _MapPickerState extends State<MapPicker>{
 
   Future getCurrentLocation() async{
     return await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+
+  sendLocation(LatLng position){
+      Map<String, dynamic> messageMap = {
+        "message" : "${position.latitude}, ${position.longitude}",
+        "sendBy" : Constants.myName,
+        "to": widget.username,
+        "isphoto": true,
+        "isLocation": true,
+        "time" : DateTime.now().millisecondsSinceEpoch
+      };
+      DbContact.addConversationMessages(widget.chatRoomId, messageMap);
   }
 
   @override
@@ -30,7 +47,6 @@ class _MapPickerState extends State<MapPicker>{
             )
         );
       });
-
 
     });
     super.initState();
@@ -61,10 +77,13 @@ class _MapPickerState extends State<MapPicker>{
                     position: newPosition
                 )
             );
+            Fluttertoast.showToast(msg: "Long Press to choose location");
             print("LOKASI BARU ANDA ${_markers.elementAt(0).position}");
           });
         },
+        // onLongPress: sendLocation(_markers.elementAt(0).position),
       ): Container(),
+
     );
   }
 
