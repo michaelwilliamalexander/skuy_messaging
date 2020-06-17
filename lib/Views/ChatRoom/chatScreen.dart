@@ -114,14 +114,12 @@ class _ChatRoomState extends State<ChatRoom>{
                       sendImage();
                       Navigator.pop(context);
                     },
-                    color: Colors.black,
+                    //color: Colors.black,
                     //highlightColor: Colors.white70,
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
                         side: BorderSide(color: Colors.grey)),
-                    child: Text(
-                      "Camera",
-                    ),
+                    child: Text("Camera",),
                   ),
                 ),
                 SizedBox(
@@ -132,14 +130,11 @@ class _ChatRoomState extends State<ChatRoom>{
                         sendImage();
                         Navigator.pop(context);
                       },
-                    color: Colors.black,
-                    //highlightColor: Colors.white70,
+                    //color: Colors.black,
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
                         side: BorderSide(color: Colors.grey)),
-                    child: Text(
-                      "Galery",
-                    ),
+                    child: Text("Gallery",),
                   ),
                 ),
               ],
@@ -167,12 +162,13 @@ class _ChatRoomState extends State<ChatRoom>{
         child: Stack(
           children: [
             Container(
-              padding: EdgeInsets.only(bottom: 80),
+              padding: EdgeInsets.only(bottom: 70),
               child: MessageList(),
             ),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
+                height: 70,
                 color: Color(0x54FFFFFF),
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Row(
@@ -186,12 +182,7 @@ class _ChatRoomState extends State<ChatRoom>{
                         width: 40,
                         padding: EdgeInsets.only(right: 10),
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [
-                                  const Color(0x36FFFFFF),
-                                  const Color(0x0FFFFFFF)
-                                ]
-                            ),
+                            color: Colors.transparent,
                             borderRadius: BorderRadius.circular(40)
                         ),
                         child: Icon(Icons.photo),
@@ -217,15 +208,10 @@ class _ChatRoomState extends State<ChatRoom>{
                         height: 40,
                         width: 40,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              const Color(0x36FFFFFF),
-                              const Color(0x0FFFFFFF)
-                            ]
-                          ),
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(40)
                         ),
-                        padding: EdgeInsets.all(12),
+
                         child: Icon(FontAwesomeIcons.angleRight),
                       ),
                     )
