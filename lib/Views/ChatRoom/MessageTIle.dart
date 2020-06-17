@@ -30,7 +30,18 @@ class MessageTileState extends State<MessageTile>{
 
   Widget getValue(bool value, String message){
     if(value){
-      return image!=null? Image.network(image,width: 300,height: 300,):Text("");
+      return image!=null?
+      GestureDetector(
+        onTap: (){
+
+        },
+        child: Image.network(image,
+
+          width: 300,
+          height: 300,
+          fit: BoxFit.cover,
+        ),
+      ) : Text("");
     }else{
       return Text(
         message,
@@ -45,13 +56,10 @@ class MessageTileState extends State<MessageTile>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return widget.isPicture ? Container(
-      margin: EdgeInsets.only(bottom: widget.isSendByMe ? 20.0 : 10.0, right: 10.0),
-      child: getValue(widget.isPicture, widget.message),
-    ) : Container(
+    return Container(
       padding: EdgeInsets.only(left: widget.isSendByMe ? 20 : 24 , right: widget.isSendByMe ? 24 : 20),
       margin: EdgeInsets.symmetric(vertical: 6),
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width/0.7,
       alignment: widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -77,10 +85,13 @@ class MessageTileState extends State<MessageTile>{
                 bottomRight: Radius.circular(25)
             )
         ),
-        child: Text(
+        child: widget.isPicture ?
+        getValue(widget.isPicture, widget.message)
+            :
+        Text(
           widget.message,
           style: TextStyle(
-            color: Colors.grey,
+            color: Colors.black,
             fontSize: 15
           ),
         ),
