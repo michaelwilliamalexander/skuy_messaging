@@ -9,6 +9,8 @@ import 'package:skuy_messaging/helper/constants.dart';
 class MapPicker extends StatefulWidget{
   String chatRoomId;
   String username;
+  MapPicker(this.chatRoomId, this.username);
+
   @override
   State<StatefulWidget> createState()=> _MapPickerState();
 }
@@ -26,7 +28,7 @@ class _MapPickerState extends State<MapPicker>{
         "message" : "${position.latitude}, ${position.longitude}",
         "sendBy" : Constants.myName,
         "to": widget.username,
-        "isphoto": true,
+        "isphoto": false,
         "isLocation": true,
         "time" : DateTime.now().millisecondsSinceEpoch
       };
@@ -81,7 +83,10 @@ class _MapPickerState extends State<MapPicker>{
             print("LOKASI BARU ANDA ${_markers.elementAt(0).position}");
           });
         },
-        // onLongPress: sendLocation(_markers.elementAt(0).position),
+        onLongPress: (temp){
+          sendLocation(_markers.elementAt(0).position);
+          Navigator.pop(context);
+        },
       ): Container(),
 
     );

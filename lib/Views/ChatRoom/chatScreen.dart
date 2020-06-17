@@ -67,6 +67,7 @@ class _ChatRoomState extends State<ChatRoom>{
         "sendBy" : Constants.myName,
         "to":widget.username,
         "isphoto": false,
+        "isLocation": false,
         "time" : DateTime.now().millisecondsSinceEpoch
       };
       DbContact.addConversationMessages(widget.chatRoomId, messageMap);
@@ -80,6 +81,7 @@ class _ChatRoomState extends State<ChatRoom>{
         "sendBy" : Constants.myName,
         "to":widget.username,
         "isphoto": true,
+        "isLocation": false,
         "time" : DateTime.now().millisecondsSinceEpoch
       };
       DbContact.addConversationMessages(widget.chatRoomId, messageMap);
@@ -240,7 +242,7 @@ class _ChatRoomState extends State<ChatRoom>{
                     GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => MapPicker()));
+                            builder: (context) => MapPicker(widget.chatRoomId, widget.username)));
                       },
                       child: Container(
                         height: 40,
