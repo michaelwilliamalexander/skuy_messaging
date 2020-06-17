@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
 import 'package:skuy_messaging/Views/ChatRoom/chatScreen.dart';
+import 'package:skuy_messaging/Views/model/friend.dart';
+import 'package:skuy_messaging/Views/model/user.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 import 'package:skuy_messaging/helper/helperfunctions.dart';
 
@@ -40,13 +42,12 @@ class ContactListState extends State<ContactList>{
 
   //buat chatroom dan query pesan
   createChatroomAndStartConversation({String username}){
-    String chatRoomId = getChatRoomId(username, Constants.myName);
-    List<String> users = [username, Constants.myName];
+    String chatRoomId = getChatRoomId(username, User.uid);
+    List<String> users = [username, User.uid];
     Map<String, dynamic> conversationMap = {
       "users": users,
       "chatroomId": chatRoomId
     };
-
     DbContact.createChatRoom(chatRoomId, conversationMap);
     //Navigator.of(context).pushNamedAndRemoveUntil('/conversation', (Route<dynamic> route) => false);
     //Navigator.popAndPushNamed(context, '/conversation', arguments: chatRoomId);
@@ -56,6 +57,7 @@ class ContactListState extends State<ContactList>{
       )
     ));
   }
+
   
   //untuk membuat id chatroom
   getChatRoomId(String a, String b){
@@ -92,7 +94,7 @@ class ContactListState extends State<ContactList>{
                     subtitle: Text(data[index]["email"]),
                     onTap: (){
                       createChatroomAndStartConversation(
-                        username: data[index]["username"]
+                        username: data[index]["uid"]
                       );
                     },
                   ),

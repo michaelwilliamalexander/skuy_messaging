@@ -5,6 +5,10 @@ import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
 class Auth_Controller{
   static FirebaseAuth authentication = FirebaseAuth.instance;
 
+  static changePass(String email){
+    authentication.sendPasswordResetEmail(email: email);
+  }
+
   static Future<bool> emailSignIn(String mail,String pass) async{
     FirebaseUser user = (await authentication.signInWithEmailAndPassword(email: mail, password: pass)).user;
     if(user.isEmailVerified){

@@ -1,4 +1,5 @@
-class User{
+
+class Friend{
   static String photo;
   static String username;
   static String email;

@@ -1,9 +1,13 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
+import 'package:skuy_messaging/Views/ChatRoom/DetailPhoto.dart';
 import 'package:skuy_messaging/Views/ChatRoom/MessageTIle.dart';
+import 'package:skuy_messaging/Views/model/friend.dart';
+import 'package:skuy_messaging/Views/model/user.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 
 class ChatRoom extends StatefulWidget{
@@ -81,6 +85,20 @@ class _ChatRoomState extends State<ChatRoom>{
     }
   }
 
+  Future<void> initiateFriend()async{
+    DbContact.searchUid(widget.username).then((value)async{
+      QuerySnapshot sp = value;
+      for(int i=0;i<sp.documents.length;i++){
+       setState(() {
+         Friend.username = sp.documents[i].data["username"];
+         Friend.email = sp.documents[i].data["email"];
+         Friend.uid = sp.documents[i].data["uid"];
+       });
+
+      }
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -89,11 +107,12 @@ class _ChatRoomState extends State<ChatRoom>{
         messagesStream = value;
       });
     });
+    initiateFriend();
+
     super.initState();
   }
 
   Future<String> createBoxDialog(BuildContext context) {
-    TextEditingController newCategory = TextEditingController();
     return showDialog(
         context: context,
         builder: (context) {
@@ -143,13 +162,57 @@ class _ChatRoomState extends State<ChatRoom>{
         });
   }
 
+  Future<String> showProfile()async{
+    return showDialog(
+      context: context,
+        builder: (context) {
+        return AlertDialog(
+          content:  Wrap(
+            children: <Widget>[
+              Container(
+                child: User.photo!=null? CircleAvatar(backgroundImage: NetworkImage(User.photo),radius: 50,child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPhoto(photo: User.photo,)));
+                  },
+                ),)
+                    :CircleAvatar(backgroundColor: Colors.blueGrey,radius: 50,),
+              ),
+              Container(height: 10,),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child:Text(Friend.username,style: TextStyle(
+                          fontSize: 25
+                      ),),
+                    ),Align(
+                      alignment: Alignment.centerLeft,
+                      child: Friend.email!=null?Text(Friend.email,style: TextStyle(
+                          fontSize: 15
+                      ),):Text(""),
+                    ),
+                  ],
+                ) ,
+              ),
+            ],
+          ),
+        );
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.username),
+        title: GestureDetector(
+          onTap: (){
+            showProfile();
+          },
+          child: Friend.username!=null?Text(Friend.username):Text(widget.username),
+        ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
