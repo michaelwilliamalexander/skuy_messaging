@@ -59,7 +59,7 @@ class MessageTileState extends State<MessageTile>{
     return Container(
       padding: EdgeInsets.only(left: widget.isSendByMe ? 20 : 24 , right: widget.isSendByMe ? 24 : 20),
       margin: EdgeInsets.symmetric(vertical: 6),
-      width: MediaQuery.of(context).size.width/0.7,
+      width: MediaQuery.of(context).size.width/0.5,
       alignment: widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -70,7 +70,7 @@ class MessageTileState extends State<MessageTile>{
                   Colors.blueAccent
                 ] : [
                   Colors.white,
-                  Colors.white12
+                  Colors.white
                 ]
             ),
             borderRadius: widget.isSendByMe ?

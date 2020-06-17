@@ -110,7 +110,7 @@ class _ChatRoomState extends State<ChatRoom>{
                       Navigator.pop(context);
                     },
                     color: Colors.black,
-                    highlightColor: Colors.white70,
+                    //highlightColor: Colors.white70,
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
                         side: BorderSide(color: Colors.grey)),
@@ -128,7 +128,7 @@ class _ChatRoomState extends State<ChatRoom>{
                         Navigator.pop(context);
                       },
                     color: Colors.white,
-                    highlightColor: Colors.white70,
+                    //highlightColor: Colors.white70,
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
                         side: BorderSide(color: Colors.grey)),
@@ -160,6 +160,7 @@ class _ChatRoomState extends State<ChatRoom>{
       ),
       body: Container(
         child: Stack(
+
           children: [
             MessageList(),
             Container(

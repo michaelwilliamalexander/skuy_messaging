@@ -74,7 +74,6 @@ class SignInState extends State<SignIn>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        backgroundColor: Colors.white,
         body: new Center(
           child: new Padding(
               padding: EdgeInsets.all(32),
@@ -89,12 +88,15 @@ class SignInState extends State<SignIn>{
                     ),
                     getForm("Email"),
                     getForm("password"),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
+                    ),
                     SizedBox(
                       width: double.infinity,
                       child: new RaisedButton(
                         onPressed: emailLogin,
-                        color: Colors.white,
-                        highlightColor: Colors.white70,
+                        //color: Colors.white,
+                        //highlightColor: Colors.white70,
                         shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(18.0),
                             side: BorderSide(color: Colors.grey)),
@@ -107,9 +109,9 @@ class SignInState extends State<SignIn>{
                       children: <Widget>[
                         RaisedButton(
                           onPressed: ()=>{Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUp()))},
-                          child: Text("Dont Have an Account?",style: TextStyle(color: Colors.lime),),
+                          child: Text("Dont Have an Account?",style: TextStyle(color: Colors.black),),
                           color: Colors.white,
-                          highlightColor: Colors.white,
+                          //highlightColor: Colors.white,
                           shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(18.0),
                               side: BorderSide(color: Colors.white)),

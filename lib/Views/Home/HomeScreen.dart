@@ -98,7 +98,7 @@ class ConversationTile extends StatelessWidget{
               Text(
                 username,
                 style: TextStyle(
-                    color: Colors.black54,
+
                     fontSize: 17
                 ),
               )

@@ -57,7 +57,7 @@ class SignUpState extends State<SignUp>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        backgroundColor: Colors.white,
+        //backgroundColor: Colors.white,
         body: new Center(
           child: new Padding(
               padding: EdgeInsets.all(32),
@@ -73,6 +73,9 @@ class SignUpState extends State<SignUp>{
                     getForm("Username"),
                     getForm("Email"),
                     getForm("password"),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 7),
+                    ),
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -80,7 +83,7 @@ class SignUpState extends State<SignUp>{
                           child: new RaisedButton(
                             onPressed: ()=>{Navigator.of(context)
                                 .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false)},
-                            color: Colors.white,
+                            color: Colors.red,
                             shape: RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(18.0),
                                 side: BorderSide(color: Colors.grey)),
@@ -89,10 +92,13 @@ class SignUpState extends State<SignUp>{
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 7)
+                        ),
                         new Expanded(
                             child: new RaisedButton(
                               onPressed: signUp,
-                              color: Colors.white,
+                              //color: Colors.white,
                               shape: RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(18.0),
                                   side: BorderSide(color: Colors.grey)),
