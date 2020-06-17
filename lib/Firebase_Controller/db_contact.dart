@@ -21,7 +21,7 @@ class DbContact{
   }
 
   static Future<void> addUserInfo(userData) async {
-    Firestore.instance.collection("users").add(userData).catchError((e) {
+    Firestore.instance.collection("users").document(userData["email"]).setData(userData).catchError((e) {
       print(e.toString());
     });
   }

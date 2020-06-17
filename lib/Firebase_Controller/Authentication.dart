@@ -24,8 +24,8 @@ class Auth_Controller{
       "username":nama,
       "email": mail,
       "uid":user.uid,
+      "tokenNotif":" "
     };
-
     try {
       await user.sendEmailVerification();
       DbContact.addUserInfo(userMap);

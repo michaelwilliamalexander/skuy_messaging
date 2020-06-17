@@ -60,6 +60,7 @@ class _ChatRoomState extends State<ChatRoom>{
       Map<String, dynamic> messageMap = {
         "message" : messageController.text,
         "sendBy" : Constants.myName,
+        "to":widget.username,
         "isphoto": false,
         "time" : DateTime.now().millisecondsSinceEpoch
       };
@@ -72,6 +73,7 @@ class _ChatRoomState extends State<ChatRoom>{
       Map<String, dynamic> messageMap = {
         "message" : images,
         "sendBy" : Constants.myName,
+        "to":widget.username,
         "isphoto": true,
         "time" : DateTime.now().millisecondsSinceEpoch
       };
