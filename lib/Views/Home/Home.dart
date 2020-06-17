@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
 import 'package:skuy_messaging/Views/Contact/contact_screen.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
 import 'package:skuy_messaging/Views/Home/HomeScreen.dart';
+import 'package:skuy_messaging/Views/Setting/Setting.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 import 'package:skuy_messaging/helper/helperfunctions.dart';
 
@@ -23,8 +25,9 @@ class HomeState extends State<Home>{
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   SharedPreferences pref;
+  String image;
   String email = "";
-  String nama="as";
+  String nama="";
   FirebaseUser user;
 
   void registerNotification()async{
@@ -101,8 +104,12 @@ class HomeState extends State<Home>{
   Future<void> getCurrentUser()async{
     Constants.myName = await HelperFunctions.getUsername();
     user = (await Auth_Controller.authentication.currentUser());
+    String namas = await HelperFunctions.getUsername();
+    String tempt = await DbContact.downloadImage("Skuy1592308940792");
     setState(() {
       email = user.email;
+      image = tempt;
+      nama = namas;
     });
   }
 
@@ -111,6 +118,8 @@ class HomeState extends State<Home>{
         builder: (context) => ContactScreen()
     ),);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -137,14 +146,20 @@ class HomeState extends State<Home>{
                   colors: [Colors.orange,Colors.red])),
               accountEmail: Text(email),
               accountName: Text(Constants.myName),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.blue,
-              ),
+              currentAccountPicture: image!=null? CircleAvatar(backgroundImage: NetworkImage(image),)
+                  :CircleAvatar(backgroundColor: Colors.blueGrey,)
             ),
             ListTile(
               title: Text("Contact"),
               leading: Icon(Icons.account_box),
               onTap: goContact,
+            ),
+            ListTile(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Setting()));
+              },
+              title: Text("Setting"),
+              leading: Icon(FontAwesomeIcons.tools),
             ),
             ListTile(
               title: Text("Sign Out"),

@@ -132,7 +132,7 @@ class _ChatRoomState extends State<ChatRoom>{
                         sendImage();
                         Navigator.pop(context);
                       },
-                    color: Colors.white,
+                    color: Colors.black,
                     //highlightColor: Colors.white70,
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
@@ -165,10 +165,9 @@ class _ChatRoomState extends State<ChatRoom>{
       ),
       body: Container(
         child: Stack(
-
           children: [
             Container(
-              padding: EdgeInsets.only(bottom: 100),
+              padding: EdgeInsets.only(bottom: 80),
               child: MessageList(),
             ),
             Container(

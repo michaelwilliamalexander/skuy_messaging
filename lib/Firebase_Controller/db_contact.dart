@@ -13,6 +13,10 @@ class DbContact{
         .getDocuments();
   }
 
+  static updatePhoto(String email,userData)async{
+    Firestore.instance.collection('users').document(email).updateData(userData);
+  }
+
   static searchEmail(String email) async{
     return await Firestore.instance
         .collection("users")

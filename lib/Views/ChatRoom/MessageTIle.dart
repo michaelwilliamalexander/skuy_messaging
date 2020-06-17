@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
+import 'package:skuy_messaging/Views/ChatRoom/DetailPhoto.dart';
 
 class MessageTile extends StatefulWidget{
   final String message;
@@ -33,7 +34,7 @@ class MessageTileState extends State<MessageTile>{
       return image!=null?
       GestureDetector(
         onTap: (){
-
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPhoto(photo: image,)));
         },
         child: Image.network(image,
           width: 300,
