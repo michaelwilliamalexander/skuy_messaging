@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
+import 'package:skuy_messaging/Views/ChatRoom/MapPicker.dart';
 import 'package:skuy_messaging/Views/ChatRoom/MessageTIle.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 
@@ -173,6 +174,22 @@ class _ChatRoomState extends State<ChatRoom>{
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Row(
                   children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => MapPicker()));
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        padding: EdgeInsets.only(right: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(40)
+                        ),
+                        child: Icon(Icons.add_location),
+                      ),
+                    ),
                     GestureDetector(
                       onTap: (){
                         createBoxDialog(context);
