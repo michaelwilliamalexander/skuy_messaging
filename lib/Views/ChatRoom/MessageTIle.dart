@@ -63,15 +63,8 @@ class MessageTileState extends State<MessageTile>{
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: widget.isSendByMe ? [
-                  Colors.blue,
-                  Colors.blueAccent
-                ] : [
-                  Colors.white,
-                  Colors.white
-                ]
-            ),
+            color: widget.isSendByMe ? Colors.blueAccent : Colors.blueGrey,
+
             borderRadius: widget.isSendByMe ?
             BorderRadius.only(
                 topLeft: Radius.circular(25),
@@ -90,7 +83,7 @@ class MessageTileState extends State<MessageTile>{
         Text(
           widget.message,
           style: TextStyle(
-            color: widget.isSendByMe ? Colors.white : Colors.black54,
+            color: Colors.white,
             fontSize: 15
           ),
         ),
