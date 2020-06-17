@@ -9,6 +9,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.black38
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: <String,WidgetBuilder>{
