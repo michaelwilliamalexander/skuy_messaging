@@ -17,7 +17,7 @@ class ConversationTile extends StatefulWidget{
 
 class ConversationState extends State<ConversationTile>{
 
-  Future<void> initiateFriend()async{
+  Future<Friend> initiateFriend()async{
     DbContact.searchUid(widget.username).then((value)async{
       QuerySnapshot sp = value;
       for(int i=0;i<sp.documents.length;i++){
@@ -35,6 +35,7 @@ class ConversationState extends State<ConversationTile>{
         });
       }
     });
+    setState(() {});
   }
 
   @override
@@ -57,24 +58,23 @@ class ConversationState extends State<ConversationTile>{
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Row(
             children: [
-              Container(
-                height: 40,
-                width: 40,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(40)
-                ),
-                child: Text("${Friend.username.substring(0,1).toUpperCase()}"),
-              ),
+//              Container(
+//                height: 40,
+//                width: 40,
+//                alignment: Alignment.center,
+//                decoration: BoxDecoration(
+//                    color: Colors.grey,
+//                    borderRadius: BorderRadius.circular(40)
+//                ),
+//                child: Text("${Friend.username.substring(0,1).toUpperCase()}"),
+//              ),
+              Friend.photo!=null?CircleAvatar(backgroundImage: NetworkImage(Friend.photo),):CircleAvatar(backgroundColor: Colors.blueGrey,),
               SizedBox(width: 8,),
-              Text(
+              Friend.username!=null?Text(
                 Friend.username,
                 style: TextStyle(
-
-                    fontSize: 17
-                ),
-              )
+                    fontSize: 17),
+              ):Text(""),
             ]
         ),
       ),

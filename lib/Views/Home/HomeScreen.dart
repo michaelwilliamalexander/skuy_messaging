@@ -70,9 +70,7 @@ class HomeScreenState extends State<HomeScreen>{
     DbContact.getConversations(User.uid).then((value){
       conversationStream = value;
     });
-    setState((){
-
-    });
+    setState((){});
   }
   @override
   Widget build(BuildContext context) {
@@ -82,45 +80,3 @@ class HomeScreenState extends State<HomeScreen>{
     );
   }
 }
-//class ConversationTile extends StatelessWidget{
-//  final String username;
-//  final String conversationId;
-//
-//  ConversationTile(this.username, this.conversationId);
-//  @override
-//  Widget build(BuildContext context) {
-//    // TODO: implement build
-//    return GestureDetector(
-//      onTap: (){
-//        Navigator.push(context, MaterialPageRoute(
-//          builder: (context) => ChatRoom(conversationId,username)
-//        ));
-//      },
-//      child: Container(
-//        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-//        child: Row(
-//            children: [
-//              Container(
-//                height: 40,
-//                width: 40,
-//                alignment: Alignment.center,
-//                decoration: BoxDecoration(
-//                    color: Colors.grey,
-//                    borderRadius: BorderRadius.circular(40)
-//                ),
-//                child: Text("${username.substring(0,1).toUpperCase()}"),
-//              ),
-//              SizedBox(width: 8,),
-//              Text(
-//                username,
-//                style: TextStyle(
-//
-//                    fontSize: 17
-//                ),
-//              )
-//            ]
-//        ),
-//      ),
-//    );
-//  }
-//}

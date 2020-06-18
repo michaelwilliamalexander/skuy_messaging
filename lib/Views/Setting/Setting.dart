@@ -25,6 +25,7 @@ class SettingState extends State<Setting>{
     setState(() {
       User.photo = count;
     });
+    Navigator.pop(context,setState((){}));
   }
 
   Future pickPictureUsingPhoto() async{
@@ -36,9 +37,10 @@ class SettingState extends State<Setting>{
     setState(() {
       User.photo = count;
     });
+    Navigator.pop(context,setState((){}));
   }
 
-  Future<String> createBoxDialog() {
+  Future<String> createBoxDialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -56,7 +58,7 @@ class SettingState extends State<Setting>{
                   child: new RaisedButton(
                     onPressed: ()async{
                       await pickPictureUsingPhoto();
-                      Navigator.pop(context);
+
                     },
                     color: Colors.black,
                     //highlightColor: Colors.white70,
@@ -73,7 +75,7 @@ class SettingState extends State<Setting>{
                   child: new RaisedButton(
                     onPressed: ()async{
                       await pickPictureFromGallery();
-                      Navigator.pop(context);
+
                     },
                     color: Colors.black,
                     //highlightColor: Colors.white70,
@@ -91,7 +93,7 @@ class SettingState extends State<Setting>{
         });
   }
 
-  Future<void> changeUsername(){
+  Future<String> changeUsername(){
     return showDialog(
         context: context,
         builder: (context) {
@@ -112,8 +114,14 @@ class SettingState extends State<Setting>{
                 width: double.infinity,
                 child: new RaisedButton(
                   onPressed: ()async{
-                    await DbContact.updateUsername(User.email,User.username);
-                    Navigator.pop(context);
+                    if(_username.text.isNotEmpty){
+                      await DbContact.updateUsername(User.email,_username.text);
+                      setState(() {
+                        Constants.myName = _username.text;
+                        User.username = _username.text;
+                      });
+                    }
+                    Navigator.of(context).pop(_username.text.toString());
                   },
                   color: Colors.black,
                   //highlightColor: Colors.white70,
@@ -130,6 +138,14 @@ class SettingState extends State<Setting>{
           );
         });
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _username.text = User.username;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,7 +206,7 @@ class SettingState extends State<Setting>{
                                  children: <Widget>[
                                    GestureDetector(
                                      onTap: (){
-                                       createBoxDialog();
+                                       createBoxDialog(context);
                                      },
                                        child: CircleAvatar(child: Icon(FontAwesomeIcons.camera),backgroundColor: Colors.orange,)),
                                  ],
@@ -221,6 +237,9 @@ class SettingState extends State<Setting>{
                     ),
                     Container(height: 10,),
                     ListTile(
+                      onTap: (){
+                        changeUsername();
+                      },
                       title: Text("Change Username"),
                       leading: Icon(Icons.account_circle),
                       subtitle: Container(

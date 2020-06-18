@@ -36,7 +36,7 @@ class _ChatRoomState extends State<ChatRoom>{
               return MessageTile(snapshot.data.documents[index].data["message"],
                   snapshot.data.documents[index].data["isphoto"],
                   snapshot.data.documents[index].data["isLocation"],
-                  snapshot.data.documents[index].data["sendBy"] == Constants.myName
+                  snapshot.data.documents[index].data["sendBy"] == User.uid
               );
             }) : Container();
       },
@@ -66,7 +66,7 @@ class _ChatRoomState extends State<ChatRoom>{
       Map<String, dynamic> messageMap = {
         "message" : messageController.text,
         "sendBy" : User.uid,
-        "to":Friend.uid,
+        "to":widget.username,
         "isphoto": false,
         "isLocation": false,
         "time" : DateTime.now().millisecondsSinceEpoch
@@ -80,7 +80,7 @@ class _ChatRoomState extends State<ChatRoom>{
       Map<String, dynamic> messageMap = {
         "message" : images,
         "sendBy" : User.uid,
-        "to":Friend.uid,
+        "to":widget.username,
         "isphoto": true,
         "isLocation": false,
         "time" : DateTime.now().millisecondsSinceEpoch
@@ -107,6 +107,7 @@ class _ChatRoomState extends State<ChatRoom>{
        });
       }
     });
+    setState(() {});
   }
 
   @override
@@ -118,7 +119,6 @@ class _ChatRoomState extends State<ChatRoom>{
       });
     });
     initiateFriend();
-
     super.initState();
   }
 

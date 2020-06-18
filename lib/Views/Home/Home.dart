@@ -107,18 +107,20 @@ class HomeState extends State<Home>{
     user = (await Auth_Controller.authentication.currentUser());
     String namas = await HelperFunctions.getUsername();
     DbContact.searchUid(user.uid).then((value)async{
-      for(int i=0;i<value.documents.length;i++){
-        String tempt = await DbContact.downloadImage(value.documents[i].data["photo"]);
+      QuerySnapshot sp = value;
+      for(int i=0;i<sp.documents.length;i++){
+        String tempt = await DbContact.downloadImage(sp.documents[i].data["photo"]);
         setState(() {
           User.photo = tempt;
+          User.username = sp.documents[i].data["username"];
         });
       }
     });
     setState(() {
       User.email = user.email;
-      User.username = namas;
       User.uid = user.uid;
     });
+
   }
 
   void goContact(){
@@ -126,8 +128,6 @@ class HomeState extends State<Home>{
         builder: (context) => ContactScreen()
     ),);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +153,7 @@ class HomeState extends State<Home>{
                   end: Alignment.bottomLeft,
                   colors: [Colors.orange,Colors.red])),
               accountEmail: Text(User.email),
-              accountName: Text(Constants.myName),
+              accountName: Text(User.username),
               currentAccountPicture: User.photo!=null? CircleAvatar(backgroundImage: NetworkImage(User.photo),)
                   :CircleAvatar(backgroundColor: Colors.blueGrey,)
             ),
@@ -164,7 +164,11 @@ class HomeState extends State<Home>{
             ),
             ListTile(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Setting()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Setting())).then((value){
+                  setState(() {
+                    getCurrentUser();
+                  });
+                });
               },
               title: Text("Setting"),
               leading: Icon(FontAwesomeIcons.tools),
