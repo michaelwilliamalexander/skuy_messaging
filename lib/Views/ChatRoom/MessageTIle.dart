@@ -25,26 +25,30 @@ class MessageTileState extends State<MessageTile>{
   void initState(){
     // TODO: implement initState
     getImage();
-    getLocation().then((temp){
-      setState(() {
-        position = temp;
-        _markers.add(
-            Marker(
-                markerId: MarkerId(widget.message),
-                position: position,
-                icon: BitmapDescriptor.defaultMarker
-            )
-        );
+    if(widget.isLocation){
+      getLocation().then((temp){
+        setState(() {
+          position = temp;
+          print("INI LATITUDE: ${temp.latitude} \n INI LONGITUDE: ${temp.longitude}");
+          _markers.add(
+              Marker(
+                  markerId: MarkerId(widget.message),
+                  position: position,
+                  icon: BitmapDescriptor.defaultMarker
+              )
+          );
+        });
       });
-    });
+    }
+
     super.initState();
   }
 
   Future getLocation() async{
-    if(widget.isLocation){
-      List<double> latlng = widget.message.split(", ").cast<double>();
-      position = LatLng(latlng[0], latlng[1]);
-    }
+      List latlng = widget.message.split(", ");
+      double latitude = double.parse(latlng[0]);
+      double longitude = double.parse(latlng[1]);
+      return LatLng(latitude, longitude);
   }
 
   void getImage()async{
@@ -104,36 +108,41 @@ class MessageTileState extends State<MessageTile>{
         ),
         child: getValue(widget.isPicture, widget.message)
       ),
-    ) : Container(
-          padding: EdgeInsets.only(left: widget.isSendByMe ? 20 : 24 , right: widget.isSendByMe ? 24 : 20),
-          margin: EdgeInsets.symmetric(vertical: 6),
-          width: MediaQuery.of(context).size.width,
-          alignment: widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+    ) : ConstrainedBox(
+          constraints: new BoxConstraints(
+            maxHeight: 300,
+          ),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            decoration: BoxDecoration(
+              padding: EdgeInsets.only(left: widget.isSendByMe ? 20 : 24 , right: widget.isSendByMe ? 24 : 20),
+              margin: EdgeInsets.symmetric(vertical: 6),
+              width: MediaQuery.of(context).size.width,
+              alignment: widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                decoration: BoxDecoration(
                 color: widget.isSendByMe ? Colors.blueAccent : Colors.blueGrey,
                 borderRadius: widget.isSendByMe ?
-                BorderRadius.only(
+                  BorderRadius.only(
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25),
                     bottomLeft: Radius.circular(25)
-                ) :
-                BorderRadius.only(
+                  ) :
+                  BorderRadius.only(
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25),
                     bottomRight: Radius.circular(25)
-                )
-            ),
-            child: position != null ? GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: CameraPosition(
-                target: position,
-                zoom: 14,
-              ),
-              markers: _markers,
-            ) : Container(),
-        )
+                  )
+                ),
+                child: position != null ? GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: CameraPosition(
+                    target: position,
+                    zoom: 14,
+                  ),
+                  markers: _markers,
+              ) : Container(),
+            )
+          )
     );
   }
 
