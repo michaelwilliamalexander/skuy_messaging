@@ -23,20 +23,6 @@ class HomeScreenState extends State<HomeScreen>{
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
-            String data = snapshot.data.documents[index].data["chatroomId"]
-                .toString()
-                .replaceAll("_", "")
-                .replaceAll(User.uid
-              ,snapshot.data.documents[index].data["chatroomId"]);
-            print("Bring some data "+data);
-            DbContact.searchUid(data).then((value){
-              QuerySnapshot sp = value;
-              for(int i=0;i<sp.documents.length;i++){
-               print("can i use this "+sp.documents[i].data["username"]);
-               setState(() {Friend.username = sp.documents[i].data["username"];});
-              }
-            });
-            
                 return Container(
                   child: Dismissible(
                     key: UniqueKey(),
@@ -70,7 +56,6 @@ class HomeScreenState extends State<HomeScreen>{
     DbContact.getConversations(User.uid).then((value){
       conversationStream = value;
     });
-    
     setState((){});
   }
   
