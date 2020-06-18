@@ -250,7 +250,7 @@ class _ChatRoomState extends State<ChatRoom>{
                     GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => MapPicker(widget.chatRoomId, widget.username)));
+                            builder: (context) => MapPicker(widget.chatRoomId, widget.uid, widget.username)));
                       },
                       child: Container(
                         height: 40,

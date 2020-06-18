@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
 import 'package:skuy_messaging/Views/ChatRoom/chatScreen.dart';
-import 'package:skuy_messaging/Views/model/friend.dart';
 import 'package:skuy_messaging/Views/model/user.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 import 'package:skuy_messaging/helper/helperfunctions.dart';
@@ -24,6 +23,9 @@ class ContactListState extends State<ContactList>{
     // TODO: implement initState
     getUserInfo();
     getCurrentUser();
+    setState(() {
+      print("TEST");
+    });
     super.initState();
   }
 

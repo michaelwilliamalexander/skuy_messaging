@@ -1,9 +1,6 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:skuy_messaging/Views/ChatRoom/chatScreen.dart';
 import 'package:skuy_messaging/Views/Home/ConversionTile.dart';
-import 'package:skuy_messaging/Views/model/friend.dart';
 import 'package:skuy_messaging/Views/model/user.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
@@ -23,10 +20,6 @@ class HomeScreenState extends State<HomeScreen>{
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
-            getFriendData(snapshot.data.documents[index].data["chatroomId"]
-                .toString()
-                .replaceAll("_", "")
-                .replaceAll(User.uid, ""));
                 return Container(
                   child: Dismissible(
                     key: UniqueKey(),
@@ -55,22 +48,10 @@ class HomeScreenState extends State<HomeScreen>{
     super.initState();
   }
 
-  String getFriendData(String uid){
-    DbContact.searchUid(uid).then((onvalue){
-      QuerySnapshot snap = onvalue;
-      for(int j=0;j<snap.documents.length;j++){
-        if(uid==snap.documents[j].data["uid"]){
-          setState(() {
-            return snap.documents[j].data["username"];
-          });
-          break;
-        }
-        print(Friend.username);
-      }
-    });
-  }
+
 
   getUserInfo() async{
+    Constants.myUid =
     Constants.myName = await HelperFunctions.getUsername();
     DbContact.getConversations(User.uid).then((value){
       conversationStream = value;

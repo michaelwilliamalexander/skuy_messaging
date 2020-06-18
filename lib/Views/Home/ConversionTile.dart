@@ -3,15 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
 import 'package:skuy_messaging/Views/ChatRoom/chatScreen.dart';
-import 'package:skuy_messaging/Views/model/friend.dart';
-import 'package:skuy_messaging/Views/model/user.dart';
 
+
+// ignore: must_be_immutable
 class ConversationTile extends StatefulWidget{
-  final String uid;
+  final String friendUid;
   final String conversationId;
-  String username;
+  String friendUsername;
 
-  ConversationTile(this.uid, this.conversationId);
+  ConversationTile(this.friendUid, this.conversationId);
   ConversationState createState()=> ConversationState();
 }
 
@@ -19,45 +19,19 @@ class ConversationState extends State<ConversationTile>{
   QuerySnapshot temp;
   @override
   void initState() {
-    //getFriendData();
-      setState(() {
     getUsernameFromUid().then((value){
-        widget.username = value.documents[0].data["username"];
-    });
+      setState(() {
+        widget.friendUsername = value.documents[0].data["username"];
+        print("INI USERNAME ${widget.friendUsername}");
       });
+    });
     super.initState();
   }
 
-  getFriendData()async{
-    DbContact.getConversations(User.uid).then((value){
-      Stream sp = value;
-      String tempt;
-      sp.forEach((element) {
-        QuerySnapshot s = element;
 
-        for(int i=0;i<s.documents.length;i++){
-           tempt= s.documents[i].data["chatroomId"]
-              .toString()
-              .replaceAll("_", "")
-              .replaceAll(User.uid,"");
-          DbContact.searchUid(tempt).then((onvalue){
-            QuerySnapshot snap = onvalue;
-            for(int j=0;j<snap.documents.length;j++){
-              setState(() {
-                widget.username = snap.documents[j].data["username"];
-              });
-              print(widget.username);
-            }
-          });
-        }
-      });
-    });
-  }
-
-  Future getUsernameFromUid() async{
-    print("INI UID ${widget.uid}");
-    return temp = await DbContact.searchUid(widget.uid);
-
+  getUsernameFromUid() async{
+    print("INI UID ${widget.friendUid}");
+    return await DbContact.searchUid(widget.friendUid);
   }
 
   @override
@@ -66,21 +40,21 @@ class ConversationState extends State<ConversationTile>{
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ChatRoom(widget.conversationId, widget.uid, widget.username)
+            builder: (context) => ChatRoom(widget.conversationId, widget.friendUid, widget.friendUsername)
         ));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Row(
             children: [
-              widget.username !=null?CircleAvatar(backgroundColor: Colors.blueGrey,child: Text("${widget.username.substring(0,1).toUpperCase()}",style: TextStyle(color: Colors.white),),)
+              widget.friendUsername !=null?CircleAvatar(backgroundColor: Colors.blueGrey,child: Text("${widget.friendUsername.substring(0,1).toUpperCase()}",style: TextStyle(color: Colors.white),),)
                   :CircleAvatar(backgroundColor: Colors.blueGrey,),
               SizedBox(width: 8,),
-              widget.username !=null?Text(
-                widget.username,
+              widget.friendUsername!=null?Text(
+                widget.friendUsername,
                 style: TextStyle(
                     fontSize: 17),
-              ):Text(""),
+              ):Text("username"),
             ]
         ),
       ),

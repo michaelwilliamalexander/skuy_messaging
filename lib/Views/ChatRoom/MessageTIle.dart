@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
 import 'package:skuy_messaging/Views/ChatRoom/DetailPhoto.dart';
@@ -20,6 +17,45 @@ class MessageTileState extends State<MessageTile>{
   String image;
   final Set<Marker> _markers = {};
   LatLng position;
+
+  Widget showInChat(){
+    return ConstrainedBox(
+        constraints: new BoxConstraints(
+          maxHeight: 300,
+        ),
+        child: Container(
+            padding: EdgeInsets.only(left: widget.isSendByMe ? 20 : 24 , right: widget.isSendByMe ? 24 : 20),
+            margin: EdgeInsets.symmetric(vertical: 6),
+            width: MediaQuery.of(context).size.width,
+            alignment: widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              decoration: BoxDecoration(
+                  color: widget.isSendByMe ? Colors.blueAccent : Colors.blueGrey,
+                  borderRadius: widget.isSendByMe ?
+                  BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                      bottomLeft: Radius.circular(25)
+                  ) :
+                  BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                      bottomRight: Radius.circular(25)
+                  )
+              ),
+              child: position != null ? GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: CameraPosition(
+                  target: position,
+                  zoom: 14,
+                ),
+                markers: _markers,
+              ) : Container(),
+            )
+        )
+    );
+  }
 
   @override
   void initState(){
@@ -108,42 +144,7 @@ class MessageTileState extends State<MessageTile>{
         ),
         child: getValue(widget.isPicture, widget.message)
       ),
-    ) : ConstrainedBox(
-          constraints: new BoxConstraints(
-            maxHeight: 300,
-          ),
-          child: Container(
-              padding: EdgeInsets.only(left: widget.isSendByMe ? 20 : 24 , right: widget.isSendByMe ? 24 : 20),
-              margin: EdgeInsets.symmetric(vertical: 6),
-              width: MediaQuery.of(context).size.width,
-              alignment: widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(
-                color: widget.isSendByMe ? Colors.blueAccent : Colors.blueGrey,
-                borderRadius: widget.isSendByMe ?
-                  BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                    bottomLeft: Radius.circular(25)
-                  ) :
-                  BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                    bottomRight: Radius.circular(25)
-                  )
-                ),
-                child: position != null ? GoogleMap(
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    target: position,
-                    zoom: 14,
-                  ),
-                  markers: _markers,
-              ) : Container(),
-            )
-          )
-    );
+    ) : showInChat();
   }
 
 }

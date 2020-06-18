@@ -7,12 +7,13 @@ import 'SearchTile.dart';
 import 'package:skuy_messaging/Firebase_Controller/Authentication.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
 
-class addContact extends StatefulWidget{
-  addContactState createState()=> addContactState();
+class AddContact extends StatefulWidget{
+  AddContactState createState()=> AddContactState();
 }
 
-class addContactState extends State<addContact>{
+class AddContactState extends State<AddContact>{
   FirebaseUser user;
+  // ignore: non_constant_identifier_names
   String currentUser_uid;
   TextEditingController search = new TextEditingController();
   QuerySnapshot snapshot;

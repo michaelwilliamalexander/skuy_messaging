@@ -4,12 +4,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:skuy_messaging/Firebase_Controller/db_contact.dart';
+import 'package:skuy_messaging/Views/model/user.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 
 class MapPicker extends StatefulWidget{
   String chatRoomId;
   String username;
-  MapPicker(this.chatRoomId, this.username);
+  String uid;
+
+  MapPicker(this.chatRoomId, this.uid, this.username);
 
   @override
   State<StatefulWidget> createState()=> _MapPickerState();
@@ -26,7 +29,7 @@ class _MapPickerState extends State<MapPicker>{
   sendLocation(LatLng position){
       Map<String, dynamic> messageMap = {
         "message" : "${position.latitude}, ${position.longitude}",
-        "sendBy" : Constants.myName,
+        "sendBy" : User.uid,
         "to": widget.username,
         "isphoto": false,
         "isLocation": true,
