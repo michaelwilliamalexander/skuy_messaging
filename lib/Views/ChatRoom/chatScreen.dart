@@ -64,8 +64,8 @@ class _ChatRoomState extends State<ChatRoom>{
     if(!messageController.text.trim().isEmpty){
       Map<String, dynamic> messageMap = {
         "message" : messageController.text,
-        "sendBy" : Constants.myName,
-        "to":widget.username,
+        "sendBy" : User.uid,
+        "to":Friend.uid,
         "isphoto": false,
         "isLocation": false,
         "time" : DateTime.now().millisecondsSinceEpoch
@@ -78,8 +78,8 @@ class _ChatRoomState extends State<ChatRoom>{
     if(images.isNotEmpty){
       Map<String, dynamic> messageMap = {
         "message" : images,
-        "sendBy" : Constants.myName,
-        "to":widget.username,
+        "sendBy" : User.uid,
+        "to":Friend.uid,
         "isphoto": true,
         "isLocation": false,
         "time" : DateTime.now().millisecondsSinceEpoch
@@ -92,12 +92,18 @@ class _ChatRoomState extends State<ChatRoom>{
     DbContact.searchUid(widget.username).then((value)async{
       QuerySnapshot sp = value;
       for(int i=0;i<sp.documents.length;i++){
+        String tempt = sp.documents[i].data["photo"];
+       if(!tempt.isEmpty){
+         String coun = await DbContact.downloadImage(tempt);
+         setState(() {
+           Friend.photo = coun;
+         });
+       }
        setState(() {
          Friend.username = sp.documents[i].data["username"];
          Friend.email = sp.documents[i].data["email"];
          Friend.uid = sp.documents[i].data["uid"];
        });
-
       }
     });
   }
@@ -173,9 +179,9 @@ class _ChatRoomState extends State<ChatRoom>{
           content:  Wrap(
             children: <Widget>[
               Container(
-                child: User.photo!=null? CircleAvatar(backgroundImage: NetworkImage(User.photo),radius: 50,child: GestureDetector(
+                child: Friend.photo!=null? CircleAvatar(backgroundImage: NetworkImage(Friend.photo),radius: 50,child: GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPhoto(photo: User.photo,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPhoto(photo: Friend.photo,)));
                   },
                 ),)
                     :CircleAvatar(backgroundColor: Colors.blueGrey,radius: 50,),

@@ -22,17 +22,6 @@ class ContactScreenState extends State<ContactScreen>{
                   end: Alignment.topCenter,
                   colors: [Colors.orange,Colors.red])),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              FontAwesomeIcons.search,
-              color: Colors.white,
-            ),
-            onPressed: () {
-
-            },
-          )
-        ],
       ),
       body: ContactList(),
       floatingActionButton: FloatingActionButton(

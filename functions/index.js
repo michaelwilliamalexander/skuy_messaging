@@ -17,7 +17,7 @@ exports.sendNotification = functions.firestore
     admin
     	.firestore()
     	.collection('users')
-    	.where('username', '==', to)
+    	.where('uid', '==', to)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(userTo => {
@@ -27,7 +27,7 @@ exports.sendNotification = functions.firestore
             admin
               .firestore()
               .collection('users')
-              .where('username', '==', sendBy)
+              .where('uid', '==', sendBy)
               .get()
               .then(querySnapshot2 => {
                 querySnapshot2.forEach(userFrom => {

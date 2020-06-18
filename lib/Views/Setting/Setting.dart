@@ -15,7 +15,7 @@ class Setting extends StatefulWidget{
 }
 
 class SettingState extends State<Setting>{
-
+  TextEditingController _username = new TextEditingController();
   Future pickPictureFromGallery() async{
     var galeryFile = await ImagePicker.pickImage(source: ImageSource.gallery);
     String tempt = "Profile-"+User.uid;
@@ -91,7 +91,45 @@ class SettingState extends State<Setting>{
         });
   }
 
-
+  Future<void> changeUsername(){
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Enter the new Username"),
+              ],
+            ),content: Wrap(
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Username",
+                ),
+                controller: _username,
+              ), SizedBox(
+                width: double.infinity,
+                child: new RaisedButton(
+                  onPressed: ()async{
+                    await DbContact.updateUsername(User.email,User.username);
+                    Navigator.pop(context);
+                  },
+                  color: Colors.black,
+                  //highlightColor: Colors.white70,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.grey)),
+                  child: Text(
+                    "Save",
+                  ),
+                ),
+              ),
+            ],
+          ),
+          );
+        });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
