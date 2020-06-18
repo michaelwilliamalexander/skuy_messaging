@@ -7,19 +7,24 @@ import 'package:skuy_messaging/Views/model/friend.dart';
 import 'package:skuy_messaging/Views/model/user.dart';
 
 class ConversationTile extends StatefulWidget{
-  final String username;
+  final String uid;
   final String conversationId;
-  final String user;
+  String username;
 
-  ConversationTile(this.username, this.conversationId,this.user);
+  ConversationTile(this.uid, this.conversationId);
   ConversationState createState()=> ConversationState();
 }
 
 class ConversationState extends State<ConversationTile>{
-
+  QuerySnapshot temp;
   @override
   void initState() {
-//    getFriendData();
+    //getFriendData();
+      setState(() {
+    getUsernameFromUid().then((value){
+        widget.username = value.documents[0].data["username"];
+    });
+      });
     super.initState();
   }
 
@@ -39,15 +44,20 @@ class ConversationState extends State<ConversationTile>{
             QuerySnapshot snap = onvalue;
             for(int j=0;j<snap.documents.length;j++){
               setState(() {
-                if(snap.documents[j].data["uid"]==widget.username){
-                  Friend.username = snap.documents[j].data["username"];
-                }
+                widget.username = snap.documents[j].data["username"];
               });
+              print(widget.username);
             }
           });
         }
       });
     });
+  }
+
+  Future getUsernameFromUid() async{
+    print("INI UID ${widget.uid}");
+    return temp = await DbContact.searchUid(widget.uid);
+
   }
 
   @override
@@ -56,18 +66,18 @@ class ConversationState extends State<ConversationTile>{
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ChatRoom(widget.conversationId,widget.username)
+            builder: (context) => ChatRoom(widget.conversationId, widget.uid, widget.username)
         ));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Row(
             children: [
-              Friend.username!=null?CircleAvatar(backgroundColor: Colors.blueGrey,child: Text("${Friend.username.substring(0,1).toUpperCase()}",style: TextStyle(color: Colors.white),),)
+              widget.username !=null?CircleAvatar(backgroundColor: Colors.blueGrey,child: Text("${widget.username.substring(0,1).toUpperCase()}",style: TextStyle(color: Colors.white),),)
                   :CircleAvatar(backgroundColor: Colors.blueGrey,),
               SizedBox(width: 8,),
-              widget.user!=null?Text(
-                widget.user,
+              widget.username !=null?Text(
+                widget.username,
                 style: TextStyle(
                     fontSize: 17),
               ):Text(""),

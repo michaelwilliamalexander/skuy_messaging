@@ -37,8 +37,8 @@ class HomeScreenState extends State<HomeScreen>{
                         snapshot.data.documents[index].data["chatroomId"]
                             .toString()
                             .replaceAll("_", "")
-                            .replaceAll(User.uid                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     , ""),
-                        snapshot.data.documents[index].data["chatroomId"],"a"
+                            .replaceAll(User.uid, ""),
+                        snapshot.data.documents[index].data["chatroomId"],
                     )
                   ),
                 );

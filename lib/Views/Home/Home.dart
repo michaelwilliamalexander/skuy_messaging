@@ -153,7 +153,7 @@ class HomeState extends State<Home>{
                   end: Alignment.bottomLeft,
                   colors: [Colors.orange,Colors.red])),
               accountEmail: Text(User.email),
-              accountName: Text(User.username),
+              accountName: Text(Constants.myName),
               currentAccountPicture: User.photo!=null? CircleAvatar(backgroundImage: NetworkImage(User.photo),)
                   :CircleAvatar(backgroundColor: Colors.blueGrey,)
             ),
