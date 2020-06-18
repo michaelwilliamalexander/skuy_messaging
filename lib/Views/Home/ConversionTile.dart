@@ -64,7 +64,7 @@ class ConversationState extends State<ConversationTile>{
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ChatRoom(widget.conversationId,widget.uid)
+            builder: (context) => ChatRoom(widget.conversationId, widget.uid, widget.username)
         ));
       },
       child: Container(

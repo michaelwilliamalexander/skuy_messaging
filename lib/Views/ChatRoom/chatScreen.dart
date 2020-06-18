@@ -12,9 +12,10 @@ import 'package:skuy_messaging/Views/model/user.dart';
 import 'package:skuy_messaging/helper/constants.dart';
 
 class ChatRoom extends StatefulWidget{
-  String chatRoomId;
-  String username;
-  ChatRoom(this.chatRoomId,this.username);
+  final String chatRoomId;
+  final String username;
+  final String uid;
+  ChatRoom(this.chatRoomId, this.uid, this.username);
 
   @override
   State<StatefulWidget> createState()=> _ChatRoomState();
@@ -90,7 +91,7 @@ class _ChatRoomState extends State<ChatRoom>{
   }
 
   Future<void> initiateFriend()async{
-    DbContact.searchUid(widget.username).then((value)async{
+    DbContact.searchUid(widget.uid).then((value)async{
       QuerySnapshot sp = value;
       for(int i=0;i<sp.documents.length;i++){
         String tempt = sp.documents[i].data["photo"];
@@ -221,7 +222,7 @@ class _ChatRoomState extends State<ChatRoom>{
           onTap: (){
             showProfile();
           },
-          child: Friend.username!=null?Text(Friend.username):Text(widget.username),
+          child: widget.username!=null?Text(widget.username):Text(""),
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(

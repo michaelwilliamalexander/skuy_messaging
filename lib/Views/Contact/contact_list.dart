@@ -17,6 +17,7 @@ class ContactList extends StatefulWidget{
 class ContactListState extends State<ContactList>{
   FirebaseUser user;
   String uid;
+  String friendUsername;
 
   @override
   void initState(){
@@ -41,9 +42,9 @@ class ContactListState extends State<ContactList>{
   }
 
   //buat chatroom dan query pesan
-  createChatroomAndStartConversation({String username}){
-    String chatRoomId = getChatRoomId(username, User.uid);
-    List<String> users = [username, User.uid];
+  createChatroomAndStartConversation({String uid}) async{
+    String chatRoomId = getChatRoomId(uid, User.uid);
+    List<String> users = [uid, User.uid];
     Map<String, dynamic> conversationMap = {
       "users": users,
       "chatroomId": chatRoomId
@@ -51,9 +52,11 @@ class ContactListState extends State<ContactList>{
     DbContact.createChatRoom(chatRoomId, conversationMap);
     //Navigator.of(context).pushNamedAndRemoveUntil('/conversation', (Route<dynamic> route) => false);
     //Navigator.popAndPushNamed(context, '/conversation', arguments: chatRoomId);
+    QuerySnapshot temp = await DbContact.searchUid(uid);
+    friendUsername = temp.documents[0].data["username"];
     Navigator.push(context, MaterialPageRoute(
       builder: (context) => ChatRoom(
-        chatRoomId,username
+        chatRoomId,uid,friendUsername
       )
     ));
   }
@@ -94,7 +97,7 @@ class ContactListState extends State<ContactList>{
                     subtitle: Text(data[index]["email"]),
                     onTap: (){
                       createChatroomAndStartConversation(
-                        username: data[index]["uid"]
+                        uid: data[index]["uid"]
                       );
                     },
                   ),
