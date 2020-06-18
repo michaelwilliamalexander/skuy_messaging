@@ -35,6 +35,7 @@ class _ChatRoomState extends State<ChatRoom>{
             itemBuilder: (context, index){
               return MessageTile(snapshot.data.documents[index].data["message"],
                   snapshot.data.documents[index].data["isphoto"],
+                  snapshot.data.documents[index].data["isLocation"],
                   snapshot.data.documents[index].data["sendBy"] == Constants.myName
               );
             }) : Container();
