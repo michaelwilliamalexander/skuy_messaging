@@ -28,28 +28,28 @@ class HomeScreenState extends State<HomeScreen>{
                 .replaceAll("_", "")
                 .replaceAll(User.uid
               ,snapshot.data.documents[index].data["chatroomId"]);
-            String tempt;
-            DbContact.searchUid(data).then((value)async{
+            print("Bring some data "+data);
+            DbContact.searchUid(data).then((value){
               QuerySnapshot sp = value;
               for(int i=0;i<sp.documents.length;i++){
-                setState(() {
-                  Friend.username = sp.documents[0].data["username"];
-                });
+               print("can i use this "+sp.documents[i].data["username"]);
+               setState(() {Friend.username = sp.documents[i].data["username"];});
               }
             });
+            
                 return Container(
                   child: Dismissible(
                     key: UniqueKey(),
                     background: Container(color: Colors.red),
                     onDismissed: (direction) async {
                     },
-                    child: ConversationTile(
+                    child:ConversationTile(
                         snapshot.data.documents[index].data["chatroomId"]
                             .toString()
                             .replaceAll("_", "")
                             .replaceAll(User.uid                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     , ""),
-                        snapshot.data.documents[index].data["chatroomId"],Friend.username
-                    ),
+                        snapshot.data.documents[index].data["chatroomId"],
+                    )
                   ),
                 );
               },
@@ -70,13 +70,15 @@ class HomeScreenState extends State<HomeScreen>{
     DbContact.getConversations(User.uid).then((value){
       conversationStream = value;
     });
+    
     setState((){});
   }
+  
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      body: conversationList(),
+      body: conversationStream!=null?conversationList():Text(" "),
     );
   }
 }
