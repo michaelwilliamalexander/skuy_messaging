@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,6 +50,19 @@ class SignInState extends State<SignIn>{
   void initState() {
     super.initState();
 
+  }
+
+  void gmailLogin() async {
+    await Auth_Controller.googleSignIn();
+    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseUser user = (await Auth_Controller.authentication.currentUser());
+    await HelperFunctions.saveUserLoggedIn(true);
+    await HelperFunctions.saveUserEmail(user.email);
+    QuerySnapshot data = await DbContact.searchEmail(user.email);
+    await HelperFunctions
+        .saveUsername(data.documents[0].data["username"]);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
   }
 
   void emailLogin() async {
@@ -102,6 +116,19 @@ class SignInState extends State<SignIn>{
                             side: BorderSide(color: Colors.grey)),
                         child: Text(
                           "Login",
+                        ),
+                      ),
+                    ),SizedBox(
+                      width: double.infinity,
+                      child: new RaisedButton(
+                        onPressed: gmailLogin,
+                        //color: Colors.white,
+                        //highlightColor: Colors.white70,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.grey)),
+                        child: Text(
+                          "Using Gmail",
                         ),
                       ),
                     ),

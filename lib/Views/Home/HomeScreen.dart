@@ -23,6 +23,10 @@ class HomeScreenState extends State<HomeScreen>{
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
+            getFriendData(snapshot.data.documents[index].data["chatroomId"]
+                .toString()
+                .replaceAll("_", "")
+                .replaceAll(User.uid, ""));
                 return Container(
                   child: Dismissible(
                     key: UniqueKey(),
@@ -34,7 +38,7 @@ class HomeScreenState extends State<HomeScreen>{
                             .toString()
                             .replaceAll("_", "")
                             .replaceAll(User.uid                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     , ""),
-                        snapshot.data.documents[index].data["chatroomId"],
+                        snapshot.data.documents[index].data["chatroomId"],"a"
                     )
                   ),
                 );
@@ -49,6 +53,21 @@ class HomeScreenState extends State<HomeScreen>{
     // TODO: implement initState
     getUserInfo();
     super.initState();
+  }
+
+  String getFriendData(String uid){
+    DbContact.searchUid(uid).then((onvalue){
+      QuerySnapshot snap = onvalue;
+      for(int j=0;j<snap.documents.length;j++){
+        if(uid==snap.documents[j].data["uid"]){
+          setState(() {
+            return snap.documents[j].data["username"];
+          });
+          break;
+        }
+        print(Friend.username);
+      }
+    });
   }
 
   getUserInfo() async{

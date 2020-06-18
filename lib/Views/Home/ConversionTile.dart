@@ -9,8 +9,9 @@ import 'package:skuy_messaging/Views/model/user.dart';
 class ConversationTile extends StatefulWidget{
   final String username;
   final String conversationId;
+  final String user;
 
-  ConversationTile(this.username, this.conversationId);
+  ConversationTile(this.username, this.conversationId,this.user);
   ConversationState createState()=> ConversationState();
 }
 
@@ -18,28 +19,30 @@ class ConversationState extends State<ConversationTile>{
 
   @override
   void initState() {
-    getFriendData();
+//    getFriendData();
     super.initState();
   }
 
   getFriendData()async{
     DbContact.getConversations(User.uid).then((value){
       Stream sp = value;
+      String tempt;
       sp.forEach((element) {
         QuerySnapshot s = element;
+
         for(int i=0;i<s.documents.length;i++){
-          String tempt = s.documents[i].data["chatroomId"]
+           tempt= s.documents[i].data["chatroomId"]
               .toString()
               .replaceAll("_", "")
               .replaceAll(User.uid,"");
           DbContact.searchUid(tempt).then((onvalue){
             QuerySnapshot snap = onvalue;
-            String username;
             for(int j=0;j<snap.documents.length;j++){
               setState(() {
-                Friend.username = snap.documents[j].data["username"];
+                if(snap.documents[j].data["uid"]==widget.username){
+                  Friend.username = snap.documents[j].data["username"];
+                }
               });
-              print(Friend.username);
             }
           });
         }
@@ -63,8 +66,8 @@ class ConversationState extends State<ConversationTile>{
               Friend.username!=null?CircleAvatar(backgroundColor: Colors.blueGrey,child: Text("${Friend.username.substring(0,1).toUpperCase()}",style: TextStyle(color: Colors.white),),)
                   :CircleAvatar(backgroundColor: Colors.blueGrey,),
               SizedBox(width: 8,),
-              Friend.username!=null?Text(
-                Friend.username,
+              widget.user!=null?Text(
+                widget.user,
                 style: TextStyle(
                     fontSize: 17),
               ):Text(""),
